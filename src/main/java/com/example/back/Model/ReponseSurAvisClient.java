@@ -23,19 +23,21 @@ public class ReponseSurAvisClient {
     private Long id;
 
     private String commentaire;
+    private String contenuAvis;
+
 
     @JsonProperty("DATE_COMMENTAIRE")  // Assurez-vous que le nom ici correspond à ce qui est envoyé dans le JSON
     @Column(name = "date_commentaire")
     private LocalDateTime dateCommentaire;
 
 
-  
-
-    
-
     @ManyToOne
     @JoinColumn(name = "proprietaire_id", referencedColumnName = "id")
-    private Proprietaire Proprietaire;
+    private Proprietaire proprietaire; // Association avec l'entité Client
+
+    @ManyToOne
+    @JoinColumn(name = "client_id", referencedColumnName = "id")
+    private client client;
 
     // Getter et Setter pour id
     public Long getId() {
@@ -66,12 +68,27 @@ public class ReponseSurAvisClient {
 
    
     // Getter et Setter pour client
-    public Proprietaire getProprietaire() {
-        return Proprietaire;
+    
+    public String getContenuAvis() {
+        return contenuAvis;
     }
 
-    public void setProprietaire(Proprietaire proprietaire) {
-        this.Proprietaire = proprietaire;
+    public void setContenuAvis(String contenuAvis) {
+        this.contenuAvis = contenuAvis;
+    }
+    public Proprietaire getProprietaire(){
+        return proprietaire;
+    }
+    public void setProprietaire(Proprietaire p){
+        this.proprietaire=p;
+
+    }
+    public client getClient(){
+        return client;
+    }
+    public void setClient(client c){
+        this.client=c;
+
     }
     
 }

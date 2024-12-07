@@ -21,5 +21,10 @@ public class AvisClientService {
     public List<AvisClient> getAvisParClient(Long clientId) {
         return avisClientRepository.findByClientId(clientId);
     }
+    public Long getProprietaireIdByContenu(String contenu) {
+        AvisClient avisClient = avisClientRepository.findByContenu(contenu)
+                .orElseThrow(() -> new RuntimeException("Avis non trouvé avec ce contenu"));
+        return avisClient.getProprietaire().getId();
+    }
 }
 

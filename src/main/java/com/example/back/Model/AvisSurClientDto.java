@@ -3,6 +3,13 @@ package com.example.back.Model;
 import java.time.LocalDateTime;
 
 public class AvisSurClientDto {
+    private Long id;
+    public Long getId() {
+        return id;
+    }
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     private String contenu;
     private int note;
@@ -19,6 +26,7 @@ public class AvisSurClientDto {
         this.nomProp=nomProp;
         this.tel_propr=tel_proprietaire;
         this.email_prop=email_proprietaire;
+        this.id=avis.getId();
 
     }
     public String getContenu() {

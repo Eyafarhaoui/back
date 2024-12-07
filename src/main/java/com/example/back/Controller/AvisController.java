@@ -2,6 +2,7 @@ package com.example.back.Controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,20 +23,40 @@ public class AvisController {
     @Autowired
     private AvisService avisService;
     @GetMapping("/proprietaire/{id}")
-    public ResponseEntity<?> getAvisByProprietaire(@PathVariable("id") Long id) {
+    //avis fait par proprietaire x 
+    public ResponseEntity<?> getAvisFaitsParProprietaire(@PathVariable("id") Long id) {
         if (id == null) {
             return ResponseEntity.badRequest().body("ID cannot be null");
         }
-        return ResponseEntity.ok(avisService. getAvisByProprietaire(id));
+        return ResponseEntity.ok(avisService.getAvisFaitsParProprietaire(id));
     }
+
     @GetMapping("/client/{id}")
+    //avis fait par proprietaire x 
+    public ResponseEntity<?> getAvisFaitsParClient(@PathVariable("id") Long id) {
+        if (id == null) {
+            return ResponseEntity.badRequest().body("ID cannot be null");
+        }
+        return ResponseEntity.ok(avisService.getAvisFaitsParClient(id));
+    }
+    @GetMapping("/avis-client/{id}")
     public ResponseEntity<?> getAvisByClient(@PathVariable("id") Long id) {
         if (id  == null) {
             return ResponseEntity.badRequest().body("ID cannot be null");
         }
         return ResponseEntity.ok(avisService.getAvisByClient(id));
     }
-    
+    @GetMapping("/avis-proprietaire/{id}")
+    public ResponseEntity<?> getAvisByProprietaire(@PathVariable("id") Long id) {
+        if (id == null) {
+            return ResponseEntity.badRequest().body("ID cannot be null");
+        }
+        try {
+            return ResponseEntity.ok(avisService.getAvisByProprietaire(id));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred: " + e.getMessage());
+        }
+    }
 
 
 }

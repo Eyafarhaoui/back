@@ -23,8 +23,8 @@ public class ProprietaireService {
     public List<Proprietaire> findByTelephone(String telephone) {
         return proprietaireRepository.findByTelephone(telephone);
     }
-    public Optional<Proprietaire> getProprietaireById(Long id) {
-        return proprietaireRepository.findById(id);
+    public Optional<Proprietaire> getProprietaireById(Long proprietaireIds) {
+        return proprietaireRepository.findById(proprietaireIds);
     }
 
     

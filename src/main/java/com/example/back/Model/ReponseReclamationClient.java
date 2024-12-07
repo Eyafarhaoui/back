@@ -9,6 +9,7 @@ public class ReponseReclamationClient {
     private Long id;
 
     
+    
     private String contenu;
     public Long getId() {
         return id;
@@ -25,5 +26,5 @@ public class ReponseReclamationClient {
     public void setContenu(String contenu) {
         this.contenu = contenu;
     }
-    
+   
 }

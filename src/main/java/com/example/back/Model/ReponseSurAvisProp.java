@@ -1,6 +1,7 @@
 package com.example.back.Model;
 
 import java.time.LocalDateTime;
+import java.util.Map;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -24,22 +25,41 @@ public class ReponseSurAvisProp {
     @SequenceGenerator(name = "responseavis_seq_gen", sequenceName = "responseavis_seq", allocationSize = 1)
     private Long id;
 
+   
+    @ManyToOne
+    @JoinColumn(name = "proprietaire_id", referencedColumnName = "id")
+    private Proprietaire proprietaire;
+    @ManyToOne
+    @JoinColumn(name = "client_id", referencedColumnName = "id")
+    private client client; // Association avec l'entité Client
     private String commentaire;
-
-    @JsonProperty("DATE_COMMENTAIRE")  // Assurez-vous que le nom ici correspond à ce qui est envoyé dans le JSON
-    @Column(name = "date_commentaire")
-    private LocalDateTime dateCommentaire;
+    private String contenuAvis;
+    
 
 
   
 
+   
+
+    public Proprietaire getProprietaire() {
+        return proprietaire;
+    }
+
+    public void setProprietaire(Proprietaire proprietaire) {
+        this.proprietaire = proprietaire;
+    }
+
     
 
-    @ManyToOne
-    @JoinColumn(name = "client_id", referencedColumnName = "id")
-    private client client;
+    /*@ManyToOne
+    @JoinColumn(name = "AVIS_ID", referencedColumnName = "id")
+    private AvisProprietaire avis; // Association avec l'entité AvisProprietaire*/
 
-    // Getter et Setter pour id
+    
+
+   
+
+    // Getters et setters
     public Long getId() {
         return id;
     }
@@ -48,7 +68,6 @@ public class ReponseSurAvisProp {
         this.id = id;
     }
 
-    // Getter et Setter pour commentaire
     public String getCommentaire() {
         return commentaire;
     }
@@ -57,17 +76,22 @@ public class ReponseSurAvisProp {
         this.commentaire = commentaire;
     }
 
-    // Getter et Setter pour dateCommentaire
-    public LocalDateTime getDateCommentaire() {
-        return dateCommentaire;
+    public String getContenuAvis() {
+        return contenuAvis;
     }
 
-    public void setDateCommentaire(LocalDateTime dateCommentaire) {
-        this.dateCommentaire = dateCommentaire;
+    public void setContenuAvis(String contenuAvis) {
+        this.contenuAvis = contenuAvis;
     }
 
-   
-    // Getter et Setter pour client
+    /*public AvisProprietaire getAvis() {
+        return avis;
+    }
+
+    public void setAvis(AvisProprietaire avis) {
+        this.avis = avis;
+    }*/
+
     public client getClient() {
         return client;
     }

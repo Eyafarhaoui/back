@@ -8,6 +8,8 @@ import org.springframework.stereotype.Service;
 
 import com.example.back.Model.ReclamationClient;
 import com.example.back.Model.ReclamationProp;
+import com.example.back.Model.client;
+import com.example.back.repository.ClientRepository;
 import com.example.back.repository.ReclamationClientRepository;
 import com.example.back.repository.reclamationPropRepository;
 
@@ -16,6 +18,8 @@ public class reclamationService {
 
     @Autowired
     private ReclamationClientRepository reclamationClientRepository;
+    @Autowired
+    private ClientRepository ClientRepository;
 
     @Autowired
     private reclamationPropRepository reclamationPropRepository;
@@ -27,12 +31,13 @@ public class reclamationService {
      * @return l'objet ReclamationClient sauvegardé.
      * @throws IllegalArgumentException si reclamationClient est null.
      */
+   
     public ReclamationClient saveReclamationClient(ReclamationClient reclamationClient) {
-        if (reclamationClient == null) {
-            throw new IllegalArgumentException("ReclamationClient cannot be null");
+        if (reclamationClient == null || reclamationClient.getIdClient() == null) {
+            throw new IllegalArgumentException("Les données de la réclamation sont invalides.");
         }
-        System.out.println("ID du client avant sauvegarde: " + reclamationClient.getClient().getId());
-        System.out.println("Saving ReclamationClient: " + reclamationClient);
+
+       
         return reclamationClientRepository.save(reclamationClient);
     }
 
@@ -67,7 +72,7 @@ public class reclamationService {
         if (reclamationProp == null) {
             throw new IllegalArgumentException("ReclamationProp cannot be null");
         }
-        System.out.println("ID du propriétaire avant sauvegarde: " + reclamationProp.getProprietaire().getId());
+        System.out.println("ID du propriétaire avant sauvegarde: " + reclamationProp.getId_proprietaire());
         System.out.println("Saving ReclamationProp: " + reclamationProp);
         return reclamationPropRepository.save(reclamationProp);
     }

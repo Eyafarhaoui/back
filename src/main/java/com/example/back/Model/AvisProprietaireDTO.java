@@ -3,9 +3,15 @@ package com.example.back.Model;
 public class AvisProprietaireDTO {
     private String contenu;
     private int note;
-    private Long clientId;
-    private Long proprietaireId;
-    private Long reservationId;
+    private String nomProprietaire;
+
+
+    public AvisProprietaireDTO(AvisProprietaire avis , String nomProprietaire) {
+        this.contenu = avis.getContenu();
+        this.note = avis.getNote();
+        this.nomProprietaire = nomProprietaire;
+        
+    }
     public String getContenu() {
         return contenu;
     }
@@ -18,24 +24,16 @@ public class AvisProprietaireDTO {
     public void setNote(int note) {
         this.note = note;
     }
-    public Long getClientId() {
-        return clientId;
+
+    public String getNomProp() {
+        return nomProprietaire;
     }
-    public void setClientId(Long clientId) {
-        this.clientId = clientId;
+
+    public void setNomProp(String n) {
+        this.nomProprietaire = n;
     }
-    public Long getProprietaireId() {
-        return proprietaireId;
-    }
-    public void setProprietaireId(Long proprietaireId) {
-        this.proprietaireId = proprietaireId;
-    }
-    public Long getReservationId() {
-        return reservationId;
-    }
-    public void setReservationId(Long reservationId) {
-        this.reservationId = reservationId;
-    }
+   
+ 
     
     
     

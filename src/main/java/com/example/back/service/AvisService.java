@@ -15,9 +15,10 @@ import com.example.back.repository.ClientRepository;
 
 import com.example.back.Model.AvisClient;
 import com.example.back.Model.AvisSurClientDto;
+import com.example.back.Model.AvisSurPriprietaireDto;
 import com.example.back.Model.AvisDto;
 import com.example.back.Model.client;
-
+import com.example.back.Model.AvisProprietaireDTO;
 
 @Service
 public class AvisService {
@@ -29,36 +30,26 @@ public class AvisService {
     private ProprietaireRepository proprietaireRepository;
     @Autowired
     private AvisClientRepository avisclientrepository;
+    @Autowired
+    private AvisProprietaireRepository AvisProprietaireRepository;
 
-    public List<AvisDto> getAvisByProprietaire(Long idProprietaire) {
+    public List<AvisSurPriprietaireDto> getAvisByProprietaire(Long idProprietaire) {
         if (idProprietaire == null) {
             throw new IllegalArgumentException("The given id must not be null");
         }
-       //recuperer les avis sur le prop connecte 
-        List<AvisProprietaire> avisList = avisProprietaireRepository.findByProprietaireId(idProprietaire);
-        List<AvisDto>avisDTOs = new ArrayList<>();
-       //recupere donnee de client qui a fait l avis 
-       for (AvisProprietaire avi : avisList) {
-        // Utiliser un tableau pour permettre la modification dans la lambda
-        final String[] nom_client = { "Nom non disponible" };
-        final String[] image_client = { "image non disponible" };
-        
-        // Récupérer le client à partir de l'objet avi
-        if (avi.getClient() != null) {
-            Optional<client> clientOpt = clientRepository.findById(avi.getClient().getId());
-            
-            clientOpt.ifPresent(client -> {
-                nom_client[0] = client.getName();
-                image_client[0] =client.getProfilePicture();
-            });
-        }
     
-        // Ajouter l'objet AvisDto à la liste
-        avisDTOs.add(new AvisDto(avi, nom_client[0],image_client[0]));
-    }
+        // Récupérer les avis associés au propriétaire
+        List<AvisProprietaire> avisList = avisProprietaireRepository.findByProprietaireId(idProprietaire);
+        List<AvisSurPriprietaireDto> avisDTOs = new ArrayList<>();
+    
+        // Convertir chaque avis en AvisSurPriprietaireDto
+        for (AvisProprietaire avi : avisList) {
+            avisDTOs.add(new AvisSurPriprietaireDto(avi));
+        }
     
         return avisDTOs;
     }
+    
     public List<AvisSurClientDto> getAvisByClient(Long idClient) {
     if (idClient == null) {
         throw new IllegalArgumentException("The given id must not be null");
@@ -94,8 +85,66 @@ public class AvisService {
     return avisDTOs;
 }
 
+// Nouvelle méthode pour récupérer les avis faits par un client
+public List<AvisProprietaireDTO> getAvisFaitsParClient(Long idclient) {
+    if (idclient == null) {
+        throw new IllegalArgumentException("The given id must not be null");
+    }
+
+    // Récupérer les avis faits par le propriétaire
+    List<AvisProprietaire> avisList = AvisProprietaireRepository.findByClientId(idclient);
+    List<AvisProprietaireDTO> avisDTOs = new ArrayList<>();
+
+    // Transformer chaque avis en AvisDto
+    for (AvisProprietaire avis : avisList) {
+        // Utiliser un tableau pour la modification dans la lambda
+        final String[] nom_Proprietaire= { "Nom non disponible" };
+        
+        if (avis.getProprietaire() != null) {
+            Optional<Proprietaire> ProprietaireOpt = proprietaireRepository.findById(avis.getProprietaire().getId());
+            ProprietaireOpt.ifPresent(Proprietaire -> {
+                nom_Proprietaire[0] =Proprietaire.getNom();
+            });
+        }
+
+        // Créer et ajouter l'objet AvisDto à la liste
+        avisDTOs.add(new AvisProprietaireDTO(avis ,nom_Proprietaire[0]) );
+    }
+
+    return avisDTOs;
+}
 
 
+
+// Nouvelle méthode pour récupérer les avis faits par un propriétaire
+public List<AvisDto> getAvisFaitsParProprietaire(Long idProprietaire) {
+    if (idProprietaire == null) {
+        throw new IllegalArgumentException("The given id must not be null");
+    }
+
+    // Récupérer les avis faits par le propriétaire
+    List<AvisClient> avisList = avisclientrepository.findByProprietaireId(idProprietaire);
+    List<AvisDto> avisDTOs = new ArrayList<>();
+
+    // Transformer chaque avis en AvisDto
+    for (AvisClient avis : avisList) {
+        // Utiliser un tableau pour la modification dans la lambda
+        final String[] nom_client = { "Nom non disponible" };
+        final String[] image_client = { "image non disponible" };
+        
+        if (avis.getClient() != null) {
+            Optional<client> clientOpt = clientRepository.findById(avis.getClient().getId());
+            clientOpt.ifPresent(client -> {
+                nom_client[0] = client.getName();
+            });
+        }
+
+        // Créer et ajouter l'objet AvisDto à la liste
+        avisDTOs.add(new AvisDto(avis, nom_client[0], image_client[0]));
+    }
+
+    return avisDTOs;
+}
 
 
 

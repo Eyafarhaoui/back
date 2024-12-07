@@ -2,25 +2,28 @@ package com.example.back.Model;
 
 import java.time.LocalDateTime;
 
-public class AvisDto {
+public class AvisSurPriprietaireDto {
     private String contenu;
     private int note;
-    private LocalDateTime dateAvis;
+   
     private String nomClient;
     private String imageClient;
 
-
-    // Constructeurs, getters et setters
-    public AvisDto(AvisClient avis , String nomClient,String image_client) {
+    // Constructeur basé sur AvisProprietaire
+    public AvisSurPriprietaireDto(AvisProprietaire avis) {
         this.contenu = avis.getContenu();
         this.note = avis.getNote();
-        this.dateAvis = avis.getDateAvis();
-        this.nomClient = nomClient;
-        this.imageClient=image_client;
         
+        if (avis.getClient() != null) {
+            this.nomClient = avis.getClient().getName();
+            this.imageClient = avis.getClient().getProfilePicture();
+        } else {
+            this.nomClient = "Client inconnu";
+            this.imageClient = "Image non disponible";
+        }
     }
 
-    // Getters et setters
+    // Getters et Setters
     public String getContenu() {
         return contenu;
     }
@@ -37,13 +40,7 @@ public class AvisDto {
         this.note = note;
     }
 
-    public LocalDateTime getDateAvis() {
-        return dateAvis;
-    }
-
-    public void setDateAvis(LocalDateTime dateAvis) {
-        this.dateAvis = dateAvis;
-    }
+   
 
     public String getNomClient() {
         return nomClient;
@@ -53,14 +50,11 @@ public class AvisDto {
         this.nomClient = nomClient;
     }
 
-   
-    public String getimageClient() {
+    public String getImageClient() {
         return imageClient;
     }
 
-    public void setimageClient(String img) {
-        this.imageClient = img;
+    public void setImageClient(String imageClient) {
+        this.imageClient = imageClient;
     }
-    
-    
 }

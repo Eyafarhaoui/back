@@ -1,5 +1,8 @@
 package com.example.back.Controller;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -7,9 +10,7 @@ import org.springframework.http.ResponseEntity;
 import com.example.back.Model.CommentaireClient;
 import com.example.back.Model.ReponseSurAvisProp;
 import com.example.back.Model.ReponseSurAvisClient;
-import com.example.back.Model.pub;
 import com.example.back.service.ReponseAvisService;
-import com.example.back.service.pubService;
 @RestController
 @RequestMapping("/api/reponseavis")
 
@@ -30,5 +31,32 @@ public class ReponseAvisController {
         ReponseSurAvisClient commsaved = avisService.saveReponseProp(commentaireRequest);
         return new ResponseEntity<>(commsaved, HttpStatus.CREATED);
     }
+    @GetMapping("/get-reponses")
+    public ResponseEntity<List<ReponseSurAvisProp>> getReponsesByCommentaireEtProprietaire(
+        @RequestParam String contenuAvis,
+        @RequestParam Long proprietaireId) {
+        
+        // Affichage des valeurs reçues pour vérifier le décodage
+        System.out.println("Recherche des réponses pour l'avis : '" + contenuAvis + "' et le propriétaire ID : " + proprietaireId);
+        
+        // Traitement des données
+        List<ReponseSurAvisProp> reponses = avisService.getReponseByCommentaireEtProprietaire(contenuAvis, proprietaireId);
+        
+        return new ResponseEntity<>(reponses, HttpStatus.OK);
+    } 
+    @GetMapping("/get-reponses-sur-AvisClient")
+    public ResponseEntity<List<ReponseSurAvisClient>>getReponsesByCommentaireEtClient(
+        @RequestParam String contenuAvis,
+        @RequestParam Long clientId) {
+        
+        // Affichage des valeurs reçues pour vérifier le décodage
+        System.out.println("Recherche des réponses pour l'avis : '" + contenuAvis + "' et le client ID : " + clientId);
+        
+        // Traitement des données
+        List<ReponseSurAvisClient> reponses = avisService.getReponsesByCommentaireEtClient(contenuAvis, clientId);
+        
+        return new ResponseEntity<>(reponses, HttpStatus.OK);
+    }
+
 
 }
